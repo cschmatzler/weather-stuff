@@ -20,4 +20,9 @@
 
 <script setup lang="ts">
 const activeDay = ref(1)
+
+const { data } = await useFetch("/api/forecast")
+console.log(data.value);
+
+
 </script>
