@@ -1,0 +1,5 @@
+<template>
+  <BaseCard>
+
+  </BaseCard>
+</template>

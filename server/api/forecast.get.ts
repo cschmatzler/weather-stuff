@@ -8,9 +8,6 @@ const querySchema = z.object({
 
 export default defineEventHandler(async (event) => {
   const {owmApiSecret} = useRuntimeConfig(event)
-  // const query = getQuery(event);
-  // const lat = query.lat;
-  // const lon = query.lon;
   const validatedQuery = await getValidatedQuery(event, body => querySchema.safeParse(body));
   if (validatedQuery.success === false) {
     console.error(validatedQuery.error);
@@ -23,7 +20,7 @@ export default defineEventHandler(async (event) => {
 
   try {
     const response = await $fetch(url);
-    const validatedResponse: OneCallApiResponse = OneCallApiResponseSchema.parse(response); 
+    const validatedResponse: OneCallApiResponse = OneCallApiResponseSchema.parse(response);
     return validatedResponse;
   } catch (error) {
     console.error(error);
