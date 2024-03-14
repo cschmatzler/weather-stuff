@@ -2,8 +2,8 @@ import {OneCallApiResponseSchema, OneCallApiResponse} from '@/utils/openWeatherM
 import { z } from 'zod'
 
 const querySchema = z.object({
-  lat: z.number(),
-  lon: z.number()
+  lat: z.string(),
+  lon: z.string()
 })
 
 export default defineEventHandler(async (event) => {
@@ -22,11 +22,10 @@ export default defineEventHandler(async (event) => {
   const url = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=${excludeParts}&appid=${owmApiSecret}&units=metric`;
 
   try {
-    const response = $fetch(url);
+    const response = await $fetch(url);
     const validatedResponse: OneCallApiResponse = OneCallApiResponseSchema.parse(response); 
     return validatedResponse;
   } catch (error) {
     console.error(error);
-    return error;
   }
 })

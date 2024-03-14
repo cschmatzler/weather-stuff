@@ -26,7 +26,7 @@ const { data } = await useFetch("/api/forecast", {
   query: {lat: '53.551086', lon: '9.993682'}
 })
 
-const days = data.value.daily;
+const days = data.value?.daily;
 console.log(days);
 
 </script>

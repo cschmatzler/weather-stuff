@@ -3,6 +3,6 @@ export default defineNuxtConfig({
 		devtools: { enabled: true },
 		modules: ["@nuxtjs/tailwindcss"],
     runtimeConfig: {
-      owmApiSecret: process.env.OWM_API_SECRET
+      owmApiSecret: process.env.OWM_API_KEY
     },
 })
