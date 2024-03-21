@@ -14,6 +14,7 @@
           :icon-id="current.weather[0].icon"
           :temperature="current.temp"
           :active="activeDay === i"
+          :is-current="true"
           @click="activeDay = i"
         />
         <DayCard
@@ -22,6 +23,7 @@
           :icon-id="day.weather[0].icon"
           :temperature="day.temp.day"
           :active="activeDay === i"
+          :is-current="false"
           @click="activeDay = i"
         />
       </template>
