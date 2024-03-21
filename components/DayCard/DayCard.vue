@@ -23,19 +23,21 @@
 </template>
 
 <script setup lang="ts">
-const { data } = withDefaults(defineProps<{
+const props = withDefaults(defineProps<{
   active: boolean,
-  data: DailyForecastData | CurrentWeatherData
+  timestamp: number,
+  iconId: string,
+  temperature: number,
 }>(), {
   active: false
 })
 
-const timestamp = data.dt * 1000;
+const timestamp = props.timestamp * 1000;
 const date = new Date(timestamp);
 const weekday = date.toLocaleDateString('en-US', { weekday: 'short' });
 const time = date.toLocaleTimeString();
 
-const temperature = computed(() => data.temp.day.toFixed())
+const temperature = computed(() => props.temperature.toFixed())
 const icon = computed(() => {
   const iconMap: Record<string, string> = {
     "01d": "☀️",
@@ -44,6 +46,6 @@ const icon = computed(() => {
     "10d": "🌦️"
   }
 
-  return iconMap[data.weather[0].icon] ?? data.weather[0].icon
+  return iconMap[props.iconId] ?? ':)'
 })
 </script>
