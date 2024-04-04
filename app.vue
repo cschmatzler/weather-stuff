@@ -1,9 +1,17 @@
 <template>
-  <div class="flex flex-col h-svh">
-    <nav class="flex h-12 bg-black">
-    </nav>
-    <main class="flex-grow lg:grid lg:grid-cols-4 bg-blue-500">
-      <section class="bg-red-500 flex gap-4 items-start">
+  <div class="flex flex-col h-svh bg-gray-900 text-gray-50">
+    <nav class="flex p-4 items-center gap-4">
+      <div><i>📍</i> Seattle, Australia</div>
+      <div>
+        <label for="city-search" class="sr-only">Search City</label>
+        <div class="bg-gray-700 py-2 px-4 rounded-full focus-within:ring-2">
+          <i>🔎</i>
+          <input id="city-search" class="bg-transparent border-0 placeholder:text-gray-400 focus:ring-0" type="search" placeholder="Search city ...">
+        </div>
+      </div>
+      </nav>
+    <main class="flex-grow lg:grid lg:grid-cols-4">
+      <section class="flex gap-4 items-start">
         <template
         v-for="(day, i) in days"
           :key="day.dt"
