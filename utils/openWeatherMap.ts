@@ -96,6 +96,9 @@ const WeatherAlertDataSchema = z.object({
   tags: z.array(z.string()),
 });
 
+// Define schema for local names
+const localNamesSchema = z.record(z.string());
+
 export const OneCallApiResponseSchema = z.object({
   lat: z.number(),
   lon: z.number(),
@@ -108,6 +111,17 @@ export const OneCallApiResponseSchema = z.object({
   alerts: z.array(WeatherAlertDataSchema).optional(),
 });
 
+// Define schema for a location
+export const LocationResponseSchema = z.array(z.object({
+  name: z.string(),
+  local_names: localNamesSchema,
+  lat: z.number(),
+  lon: z.number(),
+  country: z.string(),
+  state: z.string(),
+}));
+
+export type LocationResponse = z.infer<typeof LocationResponseSchema>;
 export type OneCallApiResponse = z.infer<typeof OneCallApiResponseSchema>;
 export type DailyForecastData = z.infer<typeof DailyForecastDataSchema>;
 export type CurrentWeatherData = z.infer<typeof CurrentWeatherDataSchema>;
