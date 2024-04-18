@@ -12,14 +12,14 @@
         <p v-if="isCurrent">{{ time }}</p>
       </header>
       <div class="p-3">
-        <span class="text-4xl" v-if="icon">{{ icon }}</span>
+        <span v-if="icon" class="text-4xl">{{ icon }}</span>
         <span class="text-4xl font-bold">{{ temperature }}°C</span>
       </div>
       <footer class="p-3 text-sm">More info..</footer>
     </template>
     <template v-else>
       <header>{{ weekday }}</header>
-      <hr class="border-gray-500" />
+      <hr class="border-gray-500" >
       <span class="p-3">{{ icon }}</span>
       <footer class="text-3xl font-medium">{{ temperature }}°C</footer>
     </template>
@@ -37,13 +37,13 @@ const props = withDefaults(
   }>(),
   {
     active: false,
-  }
+  },
 );
 
 const timestamp = props.timestamp * 1000;
 const date = new Date(timestamp);
 const weekday = date.toLocaleDateString("en-US", { weekday: "short" });
-const time = date.toLocaleTimeString('en-US', {timeStyle: 'short'});
+const time = date.toLocaleTimeString("en-US", { timeStyle: "short" });
 const localizedDate = date.toLocaleDateString();
 
 const temperature = computed(() => props.temperature.toFixed());

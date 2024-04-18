@@ -1,3 +1,8 @@
 {
-  "tailwindCSS.experimental.configFile": ".nuxt/tailwind.config/viewer-config.cjs"
+  "tailwindCSS.experimental.configFile": ".nuxt/tailwind.config/viewer-config.cjs",
+  "editor.formatOnSave": true,
+  "eslint.experimental.useFlatConfig": true,
+  "[vue]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

@@ -1,13 +1,19 @@
-import {LocationResponseSchema, LocationResponse} from '@/utils/openWeatherMap'
-import { z } from 'zod'
+import type {
+  LocationResponse} from "@/utils/openWeatherMap";
+import {
+  LocationResponseSchema
+} from "@/utils/openWeatherMap";
+import { z } from "zod";
 
 const querySchema = z.object({
   q: z.string(),
-})
+});
 
 export default defineEventHandler(async (event) => {
-  const {owmApiSecret} = useRuntimeConfig(event)
-  const validatedQuery = await getValidatedQuery(event, body => querySchema.safeParse(body));
+  const { owmApiSecret } = useRuntimeConfig(event);
+  const validatedQuery = await getValidatedQuery(event, (body) =>
+    querySchema.safeParse(body),
+  );
   if (validatedQuery.success === false) {
     console.error(validatedQuery.error);
     return validatedQuery.error;
@@ -18,9 +24,10 @@ export default defineEventHandler(async (event) => {
 
   try {
     const response = await $fetch(url);
-    const validatedResponse: LocationResponse = LocationResponseSchema.parse(response);
+    const validatedResponse: LocationResponse =
+      LocationResponseSchema.parse(response);
     return validatedResponse;
   } catch (error) {
     console.error(error);
   }
-})
+});
