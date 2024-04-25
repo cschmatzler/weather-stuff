@@ -22,10 +22,11 @@ export default defineEventHandler(async (event) => {
 
   const { q } = validatedQuery.data;
 
-  const url = `https://api.openweathermap.org/geo/1.0/direct?q=${q}&appid=${owmApiSecret}`;
+  const url = `https://api.openweathermap.org/geo/1.0/direct?q=${q}&appid=${owmApiSecret}&limit=5`;
 
   try {
     const response = await $fetch(url);
+    console.log(response)
     const validatedResponse: LocationResponse =
       LocationResponseSchema.parse(response);
     return validatedResponse;

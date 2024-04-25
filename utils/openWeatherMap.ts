@@ -115,7 +115,7 @@ export const OneCallApiResponseSchema = z.object({
 export const LocationResponseSchema = z.array(
   z.object({
     name: z.string(),
-    local_names: localNamesSchema,
+    local_names: localNamesSchema.optional(),
     lat: z.number(),
     lon: z.number(),
     country: z.string(),

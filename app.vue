@@ -2,6 +2,9 @@
   <div class="flex flex-col h-svh bg-gray-900 text-gray-50">
     <nav class="flex p-4 items-center gap-4">
       <div><i>📍</i> Seattle, Australia</div>
+      <ul>
+        <li v-for="city in cities" :key="`${city.lat}-${city.long}`">{{city.name}}</li>
+      </ul>
       <div>
         <label for="city-search" class="sr-only">Search City</label>
         <div class="bg-gray-700 py-2 px-4 rounded-full focus-within:ring-2">
@@ -53,24 +56,26 @@ import type {
 const activeDay = ref(0);
 
 const cityName = ref("");
+const cities = ref([]);
 const days = ref<DailyForecastData[]>([]);
 const current = ref<CurrentWeatherData>();
 
 const showCity = async () => {
-  const cities = await $fetch("/api/city", {
+  const citiesResult = await $fetch("/api/city", {
     query: { q: cityName.value },
   });
 
-  if (!cities) return;
+  if (!citiesResult) return;
+  cities.value = citiesResult;
 
-  const data = await $fetch("/api/forecast", {
-    query: { lat: cities[0].lat, lon: cities[0].lon },
-  });
-
-  if (!data.daily || !data.current) return;
-
-  days.value = data.daily;
-  current.value = data.current;
+  // const data = await $fetch("/api/forecast", {
+  //   query: { lat: cities[0].lat, lon: cities[0].lon },
+  // });
+  //
+  // if (!data.daily || !data.current) return;
+  //
+  // days.value = data.daily;
+  // current.value = data.current;
 };
 
 // const now = new Date().getTime()
