@@ -2,9 +2,6 @@
   <div class="flex flex-col h-svh bg-gray-900 text-gray-50">
     <nav class="flex p-4 items-center gap-4">
       <div><i>📍</i> Seattle, Australia</div>
-      <ul>
-        <li v-for="city in cities" :key="`${city.lat}-${city.long}`">{{city.name}}</li>
-      </ul>
       <div>
         <label for="city-search" class="sr-only">Search City</label>
         <div class="bg-gray-700 py-2 px-4 rounded-full focus-within:ring-2">
@@ -15,11 +12,16 @@
             class="bg-transparent border-0 placeholder:text-gray-400 focus:ring-0"
             type="search"
             placeholder="Search city ..."
-          >
+          />
           <button @click="showCity">Submit</button>
         </div>
       </div>
     </nav>
+    <ul>
+      <li v-for="city in cities" :key="`${city.lat}-${city.lon}`">
+        {{ city.name }}
+      </li>
+    </ul>
     <main class="flex-grow lg:grid lg:grid-cols-4">
       <section class="flex gap-4 items-start">
         <template v-for="(day, i) in days" :key="day.dt">
@@ -51,12 +53,13 @@
 import type {
   CurrentWeatherData,
   DailyForecastData,
+  LocationResponse,
 } from "./utils/openWeatherMap";
 
 const activeDay = ref(0);
 
 const cityName = ref("");
-const cities = ref([]);
+const cities = ref<LocationResponse>([]);
 const days = ref<DailyForecastData[]>([]);
 const current = ref<CurrentWeatherData>();
 
