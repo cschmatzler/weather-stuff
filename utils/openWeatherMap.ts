@@ -119,7 +119,7 @@ export const LocationResponseSchema = z.array(
     lat: z.number(),
     lon: z.number(),
     country: z.string(),
-    state: z.string(),
+    state: z.string().optional(),
   }),
 );
 

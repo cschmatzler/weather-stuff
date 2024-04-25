@@ -1,5 +1,6 @@
 import type {
-  LocationResponse} from "@/utils/openWeatherMap";
+  LocationResponse
+} from "@/utils/openWeatherMap";
 import {
   LocationResponseSchema
 } from "@/utils/openWeatherMap";
@@ -18,6 +19,7 @@ export default defineEventHandler(async (event) => {
     console.error(validatedQuery.error);
     return validatedQuery.error;
   }
+
   const { q } = validatedQuery.data;
 
   const url = `https://api.openweathermap.org/geo/1.0/direct?q=${q}&appid=${owmApiSecret}`;

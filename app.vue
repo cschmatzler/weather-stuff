@@ -12,7 +12,7 @@
             class="bg-transparent border-0 placeholder:text-gray-400 focus:ring-0"
             type="search"
             placeholder="Search city ..."
-          />
+          >
           <button @click="showCity">Submit</button>
         </div>
       </div>
@@ -40,9 +40,6 @@
           />
         </template>
       </section>
-      <section>2</section>
-      <section class="col-span-3">3</section>
-      <section>4</section>
     </main>
   </div>
 </template>
@@ -60,20 +57,20 @@ const days = ref<DailyForecastData[]>([]);
 const current = ref<CurrentWeatherData>();
 
 const showCity = async () => {
-  const { data: cities } = await useFetch("/api/city", {
-    query: { q: cityName },
+  const cities = await $fetch("/api/city", {
+    query: { q: cityName.value },
   });
 
-  if (!cities.value) return;
+  if (!cities) return;
 
-  const { data } = await useFetch("/api/forecast", {
-    query: { lat: cities.value[0].lat, lon: cities.value[0].lon },
+  const data = await $fetch("/api/forecast", {
+    query: { lat: cities[0].lat, lon: cities[0].lon },
   });
 
-  if (!data.value?.daily || !data.value?.current) return;
+  if (!data.daily || !data.current) return;
 
-  days.value = data.value?.daily;
-  current.value = data.value?.current;
+  days.value = data.daily;
+  current.value = data.current;
 };
 
 // const now = new Date().getTime()
