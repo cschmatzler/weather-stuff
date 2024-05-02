@@ -16,6 +16,9 @@
           <button @click="showCity">Submit</button>
         </div>
       </div>
+      <div>
+        <CitySearch />
+      </div>
     </nav>
     <ul>
       <li v-for="city in cities" :key="`${city.lat}-${city.lon}`">
