@@ -4,22 +4,29 @@
     v-model:search-term="citySearchTerm"
     class="relative"
   >
-    <ComboboxAnchor>
-      <ComboboxInput class="text-black" />
+    <ComboboxAnchor class="rounded-full bg-gray-700 focus-within:ring">
+      <span class="px-2">🔎</span>
+      <ComboboxInput
+        class="border-0 p-4 bg-transparent placeholder-gray-400 focus:ring-0"
+        placeholder="Search city ..."
+      />
       <ComboboxTrigger />
       <ComboboxCancel />
     </ComboboxAnchor>
 
-    <ComboboxContent class="absolute">
+    <ComboboxContent class="absolute bg-gray-700 p-2 w-full rounded-md mt-2">
       <ComboboxViewport>
         <ComboboxEmpty />
         <ComboboxItem
-          v-for="(city, index) in cities"
+          v-for="(cityData, index) in cities"
           :key="index"
-          :value="city"
+          :value="cityData"
+          as="button"
+          class="py-1 px-2 block w-full text-left rounded truncate data-[highlighted]:bg-gray-600"
+          @select="$emit('select', cityData)"
         >
-          <ComboboxItemIndicator />
-          <span> {{ city.name }} {{ city.state }} </span>
+          <ComboboxItemIndicator class="bg-red-500" />
+          <span> {{ cityData.name }} {{ cityData.state }} </span>
         </ComboboxItem>
       </ComboboxViewport>
       <ComboboxArrow />
@@ -45,6 +52,10 @@ import {
 } from "radix-vue";
 import { watchDebounced } from "@vueuse/core";
 
+defineEmits<{
+  select: [LocationResponse[number]];
+}>();
+
 const city = ref("");
 const citySearchTerm = ref("");
 const cities = ref<LocationResponse>([]);
@@ -52,7 +63,6 @@ const cities = ref<LocationResponse>([]);
 watchDebounced(
   citySearchTerm,
   async () => {
-    console.log(citySearchTerm.value);
     if (citySearchTerm.value.length < 3) return;
 
     const citiesResult = await $fetch("/api/city", {

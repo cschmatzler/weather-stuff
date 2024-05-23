@@ -1,30 +1,13 @@
 <template>
   <div class="flex flex-col h-svh bg-gray-900 text-gray-50">
     <nav class="flex p-4 items-center gap-4">
-      <div><i>📍</i> Seattle, Australia</div>
-      <div>
-        <label for="city-search" class="sr-only">Search City</label>
-        <div class="bg-gray-700 py-2 px-4 rounded-full focus-within:ring-2">
-          <i>🔎</i>
-          <input
-            id="city-search"
-            v-model="cityName"
-            class="bg-transparent border-0 placeholder:text-gray-400 focus:ring-0"
-            type="search"
-            placeholder="Search city ..."
-          />
-          <button @click="showCity">Submit</button>
-        </div>
+      <div v-if="cityData">
+        <span>📍</span> {{ cityData.name }}, {{ cityData.country }}
       </div>
       <div>
-        <CitySearch />
+        <CitySearch @select="getForecast" />
       </div>
     </nav>
-    <ul>
-      <li v-for="city in cities" :key="`${city.lat}-${city.lon}`">
-        {{ city.name }}
-      </li>
-    </ul>
     <main class="flex-grow lg:grid lg:grid-cols-4">
       <section class="flex gap-4 items-start">
         <template v-for="(day, i) in days" :key="day.dt">
@@ -61,28 +44,21 @@ import type {
 
 const activeDay = ref(0);
 
-const cityName = ref("");
-const cities = ref<LocationResponse>([]);
+const cityData = ref<LocationResponse[number]>();
 const days = ref<DailyForecastData[]>([]);
 const current = ref<CurrentWeatherData>();
 
-const showCity = async () => {
-  const citiesResult = await $fetch("/api/city", {
-    query: { q: cityName.value },
+async function getForecast(city: LocationResponse[number]) {
+  const data = await $fetch("/api/forecast", {
+    query: { lat: city.lat, lon: city.lon },
   });
 
-  if (!citiesResult) return;
-  cities.value = citiesResult;
+  if (!data.daily || !data.current) return;
 
-  // const data = await $fetch("/api/forecast", {
-  //   query: { lat: cities[0].lat, lon: cities[0].lon },
-  // });
-  //
-  // if (!data.daily || !data.current) return;
-  //
-  // days.value = data.daily;
-  // current.value = data.current;
-};
+  cityData.value = city;
+  days.value = data.daily;
+  current.value = data.current;
+}
 
 // const now = new Date().getTime()
 // const isToday = current ? (current?.dt * 1000 - now) <= 1000 * 60 * 60 * 24 : false
