@@ -8,8 +8,10 @@
         <CitySearch @select="getForecast" />
       </div>
     </nav>
-    <main class="flex-grow lg:grid lg:grid-cols-4">
-      <section class="flex gap-4 items-start">
+    <main class="flex-grow px-4">
+      <section
+        class="flex gap-4 items-start flex-col md:flex-row items-stretch"
+      >
         <template v-for="(day, i) in days" :key="day.dt">
           <DayCard
             v-if="i === 0 && current"
