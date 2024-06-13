@@ -1,6 +1,6 @@
 <template>
   <button
-    class="rounded-xl overflow-hidden"
+    class="rounded-xl overflow-hidden flex flex-col items-center justify-around"
     :class="active ? 'bg-blue-300' : 'bg-gray-600 text-gray-50 p-3'"
   >
     <template v-if="active">
@@ -13,15 +13,15 @@
       </header>
       <div class="p-3">
         <span v-if="icon" class="text-4xl">{{ icon }}</span>
-        <span class="text-4xl font-bold">{{ temperature }}°C</span>
+        <span class="text-4xl font-bold">{{ temperature }}°</span>
       </div>
       <footer class="p-3 text-sm">More info..</footer>
     </template>
     <template v-else>
       <header>{{ weekday }}</header>
-      <hr class="border-gray-500" >
-      <span class="p-3">{{ icon }}</span>
-      <footer class="text-3xl font-medium">{{ temperature }}°C</footer>
+      <hr class="border-gray-500" />
+      <span class="p-3 text-5xl">{{ icon }}</span>
+      <footer class="text-3xl font-medium">{{ temperature }}°</footer>
     </template>
   </button>
 </template>
@@ -37,7 +37,7 @@ const props = withDefaults(
   }>(),
   {
     active: false,
-  },
+  }
 );
 
 const timestamp = props.timestamp * 1000;
