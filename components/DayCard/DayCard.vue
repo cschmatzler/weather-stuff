@@ -1,6 +1,6 @@
 <template>
   <button
-    class="rounded-xl overflow-hidden flex flex-col items-center justify-around"
+    class="rounded-xl overflow-hidden flex flex-col items-stretch justify-around"
     :class="active ? 'bg-blue-300' : 'bg-gray-600 text-gray-50 p-3'"
   >
     <template v-if="active">
@@ -15,7 +15,14 @@
         <span v-if="icon" class="text-4xl">{{ icon }}</span>
         <span class="text-4xl font-bold">{{ temperature }}°</span>
       </div>
-      <footer class="p-3 text-sm">More info..</footer>
+      <footer class="p-3 text-sm">
+        <dl>
+          <div class="flex justify-between">
+            <dt>Wind:</dt>
+            <dd>{{ windSpeed }}</dd>
+          </div>
+        </dl>
+      </footer>
     </template>
     <template v-else>
       <header>{{ weekday }}</header>
@@ -34,10 +41,11 @@ const props = withDefaults(
     iconId: string;
     temperature: number;
     isCurrent: boolean;
+    windSpeed: number;
   }>(),
   {
     active: false,
-  },
+  }
 );
 
 const timestamp = props.timestamp * 1000;

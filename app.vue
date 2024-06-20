@@ -20,6 +20,7 @@
             :temperature="current.temp"
             :active="activeDay === i"
             :is-current="true"
+            :wind-speed="current.wind_speed"
             @click="activeDay = i"
           />
           <DayCard
@@ -29,6 +30,7 @@
             :temperature="day.temp.day"
             :active="activeDay === i"
             :is-current="false"
+            :wind-speed="current.wind_speed"
             @click="activeDay = i"
           />
         </template>
