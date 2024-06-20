@@ -1,9 +1,5 @@
-import type {
-  LocationResponse
-} from "@/utils/openWeatherMap";
-import {
-  LocationResponseSchema
-} from "@/utils/openWeatherMap";
+import type { LocationResponse } from "@/utils/openWeatherMap";
+import { LocationResponseSchema } from "@/utils/openWeatherMap";
 import { z } from "zod";
 
 const querySchema = z.object({
@@ -26,7 +22,7 @@ export default defineEventHandler(async (event) => {
 
   try {
     const response = await $fetch(url);
-    console.log(response)
+    console.log(response);
     const validatedResponse: LocationResponse =
       LocationResponseSchema.parse(response);
     return validatedResponse;

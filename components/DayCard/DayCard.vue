@@ -37,7 +37,7 @@ const props = withDefaults(
   }>(),
   {
     active: false,
-  }
+  },
 );
 
 const timestamp = props.timestamp * 1000;

@@ -1,8 +1,5 @@
-import type {
-  OneCallApiResponse} from "@/utils/openWeatherMap";
-import {
-  OneCallApiResponseSchema
-} from "@/utils/openWeatherMap";
+import type { OneCallApiResponse } from "@/utils/openWeatherMap";
+import { OneCallApiResponseSchema } from "@/utils/openWeatherMap";
 import { z } from "zod";
 
 const querySchema = z.object({

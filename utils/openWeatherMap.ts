@@ -120,7 +120,7 @@ export const LocationResponseSchema = z.array(
     lon: z.number(),
     country: z.string(),
     state: z.string().optional(),
-  })
+  }),
 );
 
 export type LocationResponse = z.infer<typeof LocationResponseSchema>;

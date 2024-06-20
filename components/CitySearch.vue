@@ -2,6 +2,7 @@
   <ComboboxRoot
     v-model="city"
     v-model:search-term="citySearchTerm"
+    @update:search-term="onSearchUpdate"
     class="relative"
   >
     <ComboboxAnchor class="rounded-full bg-gray-700 focus-within:ring">
@@ -16,23 +17,26 @@
 
     <ComboboxContent class="absolute bg-gray-700 p-2 w-full rounded-md mt-2">
       <ComboboxViewport>
-        <ComboboxEmpty />
-        <ComboboxItem
-          v-for="(cityData, index) in cities"
-          :key="index"
-          :value="cityData"
-          as="button"
-          class="py-1 px-2 block w-full text-left rounded truncate data-[highlighted]:bg-gray-600"
-          @select="
-            () => {
-              $emit('select', cityData);
-              cities = [];
-            }
-          "
-        >
-          <ComboboxItemIndicator class="bg-red-500" />
-          <span> {{ cityData.name }} {{ cityData.state }} </span>
-        </ComboboxItem>
+        <div v-if="loading">Loading...</div>
+        <template v-else>
+          <ComboboxEmpty />
+          <ComboboxItem
+            v-for="(cityData, index) in cities"
+            :key="index"
+            :value="cityData"
+            as="button"
+            class="py-1 px-2 block w-full text-left rounded truncate data-[highlighted]:bg-gray-600"
+            @select="
+              () => {
+                $emit('select', cityData);
+                cities = [];
+              }
+            "
+          >
+            <ComboboxItemIndicator class="bg-red-500" />
+            <span> {{ cityData.name }} {{ cityData.state }} </span>
+          </ComboboxItem>
+        </template>
       </ComboboxViewport>
       <ComboboxArrow />
     </ComboboxContent>
@@ -54,28 +58,36 @@ import {
   ComboboxTrigger,
   ComboboxViewport,
 } from "radix-vue";
-import { watchDebounced } from "@vueuse/core";
 
 defineEmits<{
   select: [LocationResponse[number]];
 }>();
 
+const loading = ref(false);
 const city = ref("");
 const citySearchTerm = ref("");
 const cities = ref<LocationResponse>([]);
 
-watchDebounced(
-  citySearchTerm,
-  async () => {
-    if (citySearchTerm.value.trim().length === 0) return;
+let updateTimeout: NodeJS.Timeout | undefined = undefined;
+
+const onSearchUpdate = (searchValue: string) => {
+  clearTimeout(updateTimeout);
+  updateTimeout = undefined;
+  loading.value = true;
+
+  updateTimeout = setTimeout(async () => {
+    if (searchValue.trim().length === 0) {
+      loading.value = false;
+      return;
+    }
 
     const citiesResult = await $fetch("/api/city", {
-      query: { q: citySearchTerm.value },
+      query: { q: searchValue },
     });
+    loading.value = false;
 
     if (!citiesResult) return [];
     cities.value = citiesResult;
-  },
-  { debounce: 1000 }
-);
+  }, 1000);
+};
 </script>
