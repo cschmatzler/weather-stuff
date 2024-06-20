@@ -23,7 +23,12 @@
           :value="cityData"
           as="button"
           class="py-1 px-2 block w-full text-left rounded truncate data-[highlighted]:bg-gray-600"
-          @select="$emit('select', cityData)"
+          @select="
+            () => {
+              $emit('select', cityData);
+              cities = [];
+            }
+          "
         >
           <ComboboxItemIndicator class="bg-red-500" />
           <span> {{ cityData.name }} {{ cityData.state }} </span>
@@ -36,7 +41,6 @@
 
 <script setup lang="ts">
 import type { LocationResponse } from "../utils/openWeatherMap";
-
 import {
   ComboboxAnchor,
   ComboboxArrow,
@@ -63,7 +67,7 @@ const cities = ref<LocationResponse>([]);
 watchDebounced(
   citySearchTerm,
   async () => {
-    if (citySearchTerm.value.length < 3) return;
+    if (citySearchTerm.value.trim().length === 0) return;
 
     const citiesResult = await $fetch("/api/city", {
       query: { q: citySearchTerm.value },
