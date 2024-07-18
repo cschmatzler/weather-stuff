@@ -35,6 +35,7 @@
           />
         </template>
       </section>
+      {{ coords }}
     </main>
   </div>
 </template>
@@ -45,6 +46,7 @@ import type {
   DailyForecastData,
   LocationResponse,
 } from "./utils/openWeatherMap";
+import { useGeolocation } from "@vueuse/core";
 
 const activeDay = ref(0);
 
@@ -64,6 +66,7 @@ async function getForecast(city: LocationResponse[number]) {
   current.value = data.current;
 }
 
+const { coords, locatedAt, error, resume, pause } = useGeolocation();
 // const now = new Date().getTime()
 // const isToday = current ? (current?.dt * 1000 - now) <= 1000 * 60 * 60 * 24 : false
 </script>
