@@ -46,7 +46,7 @@ import type {
   DailyForecastData,
   LocationResponse,
 } from "./utils/openWeatherMap";
-import { useGeolocation } from "@vueuse/core";
+import {useGeolocation, watchOnce} from "@vueuse/core";
 
 const activeDay = ref(0);
 
@@ -67,6 +67,20 @@ async function getForecast(city: LocationResponse[number]) {
 }
 
 const { coords, locatedAt, error, resume, pause } = useGeolocation();
+
+watchOnce(coords, async (newCoords) => {
+  if (newCoords.latitude !== Infinity) {
+      const data = await $fetch("/api/forecast", {
+          query: { lat: coords.value.latitude, lon: coords.value.longitude },
+      });
+
+      if (!data?.daily || !data?.current) return;
+
+      days.value = data.daily;
+      current.value = data.current;
+  }
+});
+
 // const now = new Date().getTime()
 // const isToday = current ? (current?.dt * 1000 - now) <= 1000 * 60 * 60 * 24 : false
 </script>
