@@ -10,7 +10,7 @@
     </nav>
     <main class="flex-grow px-4">
       <section
-        class="flex gap-4 items-start flex-col md:flex-row items-stretch"
+        class="flex gap-4 flex-col md:flex-row"
       >
         <template v-for="(day, i) in days" :key="day.dt">
           <DayCard
@@ -35,7 +35,6 @@
           />
         </template>
       </section>
-      {{ coords }}
     </main>
   </div>
 </template>
@@ -66,7 +65,7 @@ async function getForecast(city: LocationResponse[number]) {
   current.value = data.current;
 }
 
-const { coords, locatedAt, error, resume, pause } = useGeolocation();
+const { coords } = useGeolocation();
 
 watchOnce(coords, async (newCoords) => {
   if (newCoords.latitude !== Infinity) {
