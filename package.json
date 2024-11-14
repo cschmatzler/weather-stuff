@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@vueuse/core": "^10.9.0",
+    "pure-snow.js": "^2.1.0",
     "radix-vue": "^1.8.3",
     "zod": "^3.22.4"
   }

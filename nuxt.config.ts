@@ -7,6 +7,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     owmApiSecret: process.env.OWM_API_KEY,
   },
+  ssr: false,
   tailwindcss: {
     config: {
       plugins: [FormsPlugin],

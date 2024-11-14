@@ -1,5 +1,6 @@
 <template>
   <div class="flex flex-col h-svh bg-gray-900 text-gray-50">
+    <div id="snow"></div>
     <nav class="flex p-4 items-center gap-4">
       <div v-if="cityData">
         <span>📍</span> {{ cityData.name }}, {{ cityData.country }}
@@ -8,10 +9,8 @@
         <CitySearch @select="getForecast" />
       </div>
     </nav>
-    <main class="flex-grow px-4">
-      <section
-        class="flex gap-4 flex-col md:flex-row"
-      >
+    <main class="flex-grow px-4 relative">
+      <section class="flex gap-4 flex-col md:flex-row">
         <template v-for="(day, i) in days" :key="day.dt">
           <DayCard
             v-if="i === 0 && current"
@@ -46,6 +45,12 @@ import type {
   LocationResponse,
 } from "./utils/openWeatherMap";
 import { useGeolocation, watchOnce } from "@vueuse/core";
+
+import "pure-snow.js/style.css"; // Remember to import style.css
+import { createSnow, showSnow } from "pure-snow.js";
+
+// createSnow(); // creates snowflakes and generate css for them
+// showSnow(true); // snow can be disabled using showSnow function
 
 const activeDay = ref(0);
 
@@ -89,4 +94,9 @@ watchOnce(coords, async (newCoords) => {
 
 // const now = new Date().getTime()
 // const isToday = current ? (current?.dt * 1000 - now) <= 1000 * 60 * 60 * 24 : false
+
+onMounted(() => {
+  createSnow(); // creates snowflakes and generate css for them
+  showSnow(true); // snow can be disabled using showSnow function
+});
 </script>
