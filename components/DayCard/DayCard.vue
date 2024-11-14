@@ -1,13 +1,15 @@
 <template>
   <button
     class="rounded-xl overflow-hidden flex flex-col grow items-stretch justify-around"
-    :class="active ? 'bg-blue-300 text-gray-900' : 'bg-gray-600 text-gray-50 p-3'"
+    :class="
+      active ? 'bg-[#c2d3e8] text-gray-900' : 'bg-gray-600 text-gray-50 p-3'
+    "
   >
     <template v-if="active">
-      <header class="flex bg-blue-400 justify-between p-3">
+      <header class="flex bg-[#a3bad3] justify-between p-3">
         <div class="text-start">
           <p>{{ weekday }}</p>
-          <p>{{ localizedDate }}</p>
+          <p class="text-xs text-gray-600">{{ localizedDate }}</p>
         </div>
         <p v-if="isCurrent" class="ml-4">{{ time }}</p>
       </header>
@@ -26,7 +28,7 @@
     </template>
     <template v-else>
       <header>{{ weekday }}</header>
-      <hr class="border-gray-500" >
+      <hr class="border-gray-500" />
       <span class="p-3 text-5xl">{{ icon }}</span>
       <footer class="text-3xl font-medium">{{ temperature }}°</footer>
     </template>
@@ -34,6 +36,8 @@
 </template>
 
 <script setup lang="ts">
+import { useNavigatorLanguage } from "@vueuse/core";
+
 const props = withDefaults(
   defineProps<{
     active: boolean;
@@ -48,11 +52,12 @@ const props = withDefaults(
   }
 );
 
+const { language } = useNavigatorLanguage();
 const timestamp = props.timestamp * 1000;
 const date = new Date(timestamp);
-const weekday = date.toLocaleDateString("en-US", { weekday: "long" });
-const time = date.toLocaleTimeString("en-US", { timeStyle: "short" });
-const localizedDate = date.toLocaleDateString();
+const weekday = date.toLocaleDateString(language.value, { weekday: "long" });
+const time = date.toLocaleTimeString(language.value, { timeStyle: "short" });
+const localizedDate = date.toLocaleDateString(language.value);
 
 const temperature = computed(() => props.temperature.toFixed());
 const icon = computed(() => {
