@@ -61,6 +61,7 @@ const icon = computed(() => {
     "02d": "🌤️",
     "04d": "☁️",
     "10d": "🌦️",
+    "13d": "🌨️",
   };
 
   return iconMap[props.iconId];
